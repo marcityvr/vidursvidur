@@ -1,0 +1,418 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>vidursvidur</title>
+
+<style>
+
+@import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+}
+
+body{
+background:url('https://images.unsplash.com/photo-1534796636912-3b95b3ab5986?q=80&w=1200&auto=format&fit=crop') repeat;
+font-family:'VT323', monospace;
+color:white;
+font-size:22px;
+}
+
+a{
+color:#cfcfcf;
+text-decoration:none;
+}
+
+a:hover{
+color:white;
+text-shadow:0 0 10px white;
+}
+
+#container{
+max-width:1100px;
+margin:30px auto;
+display:flex;
+gap:12px;
+padding:10px;
+}
+
+#sidebar{
+width:300px;
+background:black;
+border:3px solid white;
+}
+
+.profile-header{
+padding:15px;
+text-align:center;
+border-bottom:2px solid white;
+}
+
+.profile-pic{
+width:180px;
+height:180px;
+margin:auto;
+border:2px solid white;
+object-fit:cover;
+display:block;
+filter:grayscale(100%);
+}
+
+.section{
+padding:12px;
+border-top:2px solid white;
+}
+
+.section-title{
+background:white;
+color:black;
+padding:4px;
+margin-bottom:10px;
+text-align:center;
+font-weight:bold;
+}
+
+#main{
+flex:1;
+background:#d8d8d8;
+color:black;
+border:3px solid white;
+}
+
+.top-banner{
+background:black;
+color:white;
+padding:15px;
+text-align:center;
+border-bottom:3px solid white;
+}
+
+.top-banner h1{
+font-size:60px;
+letter-spacing:4px;
+}
+
+.status{
+background:white;
+padding:10px;
+text-align:center;
+border-bottom:2px solid black;
+}
+
+.content{
+padding:20px;
+}
+
+.card{
+background:white;
+padding:15px;
+margin-bottom:15px;
+border:2px solid black;
+}
+
+.card h2{
+margin-bottom:10px;
+}
+
+.grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+gap:10px;
+}
+
+.badge{
+border:2px solid black;
+padding:10px;
+text-align:center;
+background:#efefef;
+}
+
+.button{
+display:block;
+padding:8px;
+margin:8px 0;
+text-align:center;
+border:2px solid white;
+}
+
+.button:hover{
+background:white;
+color:black;
+}
+
+footer{
+background:black;
+color:white;
+padding:15px;
+text-align:center;
+margin-top:20px;
+}
+
+.marquee{
+background:black;
+color:white;
+padding:10px;
+overflow:hidden;
+white-space:nowrap;
+}
+
+.marquee span{
+display:inline-block;
+padding-left:100%;
+animation:scroll 20s linear infinite;
+}
+
+@keyframes scroll{
+0%{transform:translateX(0);}
+100%{transform:translateX(-100%);}
+}
+
+.spotify{
+width:100%;
+height:152px;
+border:none;
+}
+
+@media(max-width:900px){
+
+#container{
+flex-direction:column;
+}
+
+#sidebar{
+width:100%;
+}
+
+}
+
+</style>
+</head>
+
+<body>
+
+<div id="container">
+
+<div id="sidebar">
+
+<div class="profile-header">
+
+<img
+  class="profile-pic"
+  src="https://files.catbox.moe/131448.jpeg"
+  alt="Vidur Reddy">
+
+<h2>Vidur Reddy</h2>
+
+<p>Bengaluru, India</p>
+
+<p>Business Development • Marketing • Music</p>
+
+</div>
+
+<div class="section">
+
+<div class="section-title">
+Links
+</div>
+
+<a class="button" href="https://linktr.ee/vidurmarc" target="_blank">
+LINKTREE
+</a>
+
+<a class="button" href="https://open.spotify.com/artist/7FBcuc1gsnv6Y1nwFtNRCb?si=GF2Q4gu4TbuHAhe0Ujz9jA" target="_blank">
+SPOTIFY
+</a>
+
+</div>
+
+<div class="section">
+
+<div class="section-title">
+Education
+</div>
+
+<p>
+B.Com Strategic Finance
+</p>
+
+<p>
+St. Joseph's College of Commerce
+</p>
+
+</div>
+
+<div class="section">
+
+<div class="section-title">
+Achievements
+</div>
+
+<ul>
+<li>MUN Winner</li>
+<li>4+ Olympiad Awards</li>
+<li>German A1</li>
+<li>SQL Certified</li>
+<li>Python Certified</li>
+<li>Marketing Fest Podium Finish</li>
+</ul>
+
+</div>
+
+<div class="section">
+
+<div class="section-title">
+Interests
+</div>
+
+<p>Music</p>
+<p>Live Events</p>
+<p>Marketing</p>
+<p>Business Development</p>
+<p>Concerts</p>
+<p>Money</p>
+
+</div>
+
+</div>
+
+<div id="main">
+
+<div class="top-banner">
+
+<h1>vidursvidur</h1>
+
+<p>
+welcome to my corner of the internet
+</p>
+
+</div>
+
+<div class="marquee">
+<span>
+🎵 LINKIN PARK • MY CHEMICAL ROMANCE • NIRVANA • GREEN DAY • CALVIN HARRIS • DEF LEPPARD • ANIRUDH • SHAAN 🎵
+</span>
+</div>
+
+<div class="status">
+Currently helping sell experiences and building cool things in music & live entertainment.
+</div>
+
+<div class="content">
+
+<div class="card">
+
+<h2>About Me</h2>
+
+<p>
+I'm Vidur, a Bengaluru-based business development and marketing professional currently working with BookMyShow.
+</p>
+
+<br>
+
+<p>
+I've worked across event marketing, campaign strategy, ticketing, creative operations, growth marketing, copywriting and partner management.
+</p>
+
+<br>
+
+<p>
+My work has contributed to ₹1 crore+ in ticketing revenue and supported 30+ live events ranging from concerts and comedy shows to large-scale entertainment experiences.
+</p>
+
+</div>
+
+<div class="card">
+
+<h2>Experience</h2>
+
+<div class="grid">
+
+<div class="badge">
+<h3>BookMyShow</h3>
+Business Development
+</div>
+
+<div class="badge">
+<h3>CRED</h3>
+Campaign Specialist
+</div>
+
+<div class="badge">
+<h3>MuseComm</h3>
+Copywriting Intern
+</div>
+
+<div class="badge">
+<h3>Vyass Gianetti</h3>
+Creative & Servicing
+</div>
+
+</div>
+
+</div>
+
+<div class="card">
+
+<h2>Events & Artists Worked On</h2>
+
+<p>
+Linkin Park • Calvin Harris • Def Leppard • Sunil Grover • Shaan • Anirudh • Vijay Antony • K.S. Chithra • Thaman • Ilaiyaraaja
+</p>
+
+</div>
+
+<div class="card">
+
+<h2>Currently Listening</h2>
+
+<iframe
+class="spotify"
+src="https://open.spotify.com/embed/artist/7FBcuc1gsnv6Y1nwFtNRCb">
+</iframe>
+
+</div>
+
+<div class="card">
+
+<h2>Skills</h2>
+
+<div class="grid">
+
+<div class="badge">Marketing</div>
+<div class="badge">Business Development</div>
+<div class="badge">Campaign Management</div>
+<div class="badge">Ticketing Strategy</div>
+<div class="badge">Copywriting</div>
+<div class="badge">Canva</div>
+<div class="badge">Python</div>
+<div class="badge">SQL</div>
+
+</div>
+
+</div>
+
+<footer>
+
+© 2026 VIDUR REDDY
+
+<br>
+
+built with caffeine, concerts and questionable sleep schedules.
+
+</footer>
+
+</div>
+
+</div>
+
+</div>
+
+</body>
+</html>
+```
