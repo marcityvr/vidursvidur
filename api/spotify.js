@@ -67,8 +67,8 @@ module.exports = async (req, res) => {
     }));
 
     // Top Tracks (6 months)
-    const tracksResponse = await fetch(
-      "https://api.spotify.com/v1/me/top/tracks?limit=5&time_range=medium_term",
+  const tracksResponse = await fetch(
+  "https://api.spotify.com/v1/me/top/tracks?limit=5&time_range=short_term",
       {
         headers: {
           Authorization: `Bearer ${accessToken}`,
