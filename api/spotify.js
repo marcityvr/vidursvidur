@@ -1,98 +1,690 @@
-module.exports = async (req, res) => {
-  const CLIENT_ID = process.env.SPOTIFY_CLIENT_ID;
-  const CLIENT_SECRET = process.env.SPOTIFY_CLIENT_SECRET;
-  const REFRESH_TOKEN = process.env.SPOTIFY_REFRESH_TOKEN;
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  try {
-    // Get fresh access token
-    const tokenResponse = await fetch(
-      "https://accounts.spotify.com/api/token",
-      {
-        method: "POST",
-        headers: {
-          Authorization:
-            "Basic " +
-            Buffer.from(
-              `${CLIENT_ID}:${CLIENT_SECRET}`
-            ).toString("base64"),
-          "Content-Type": "application/x-www-form-urlencoded",
-        },
-        body: new URLSearchParams({
-          grant_type: "refresh_token",
-          refresh_token: REFRESH_TOKEN,
-        }),
-      }
-    );
+<title>vidursvidur</title>
 
-    const tokenData = await tokenResponse.json();
-    const accessToken = tokenData.access_token;
+<style>
 
-    // Currently Playing
-    const currentResponse = await fetch(
-      "https://api.spotify.com/v1/me/player/currently-playing",
-      {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      }
-    );
+@import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
 
-    let currentlyPlaying = null;
+:root{
+--bg:#121212;
+--panel:#1b1b1b;
+--card:#ececec;
+--accent:#9DFF00;
+--accent2:#D64CB5;
+--text:#f5f5f5;
+--muted:#bdbdbd;
+}
 
-    if (currentResponse.status === 200) {
-      const currentData = await currentResponse.json();
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+}
 
-      currentlyPlaying = {
-        track: currentData.item?.name,
-        artist: currentData.item?.artists?.[0]?.name,
-        albumArt: currentData.item?.album?.images?.[0]?.url,
-      };
-    }
+body{
+background:
+linear-gradient(rgba(0,0,0,.78),rgba(0,0,0,.78)),
+url('https://images.unsplash.com/photo-1516280440614-37939bbacd81?q=80&w=1600&auto=format&fit=crop');
+background-size:cover;
+background-position:center;
+background-attachment:fixed;
+font-family:'VT323', monospace;
+font-size:24px;
+color:var(--text);
+}
 
-    // Top Artists (6 months)
-    const artistsResponse = await fetch(
-      "https://api.spotify.com/v1/me/top/artists?limit=5&time_range=medium_term",
-      {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      }
-    );
+a{
+text-decoration:none;
+color:var(--accent);
+transition:.2s;
+}
 
-    const artistsData = await artistsResponse.json();
+a:hover{
+color:white;
+}
 
-    const topArtists = artistsData.items?.map((artist) => ({
-      name: artist.name,
-      image: artist.images?.[0]?.url,
-    }));
+#container{
+max-width:1300px;
+margin:25px auto;
+padding:12px;
+display:flex;
+gap:16px;
+align-items:flex-start;
+}
 
-    // Top Tracks (6 months)
-    const tracksResponse = await fetch(
-      "https://api.spotify.com/v1/me/top/tracks?limit=5&time_range=medium_term",
-      {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      }
-    );
+#sidebar{
+width:340px;
+background:var(--panel);
+border:3px solid var(--accent);
+overflow:hidden;
+position:sticky;
+top:20px;
+}
 
-    const tracksData = await tracksResponse.json();
+.profile-header{
+padding:20px;
+text-align:center;
+border-bottom:2px solid var(--accent);
+}
 
-    const topTracks = tracksData.items?.map((track) => ({
-      name: track.name,
-      artist: track.artists[0].name,
-    }));
+.profile-pic{
+width:210px;
+height:210px;
+margin:auto;
+display:block;
+object-fit:cover;
+border:3px solid var(--accent);
+filter:grayscale(20%);
+}
 
-    res.status(200).json({
-      currentlyPlaying,
-      topArtists,
-      topTracks,
-    });
-  } catch (error) {
-    console.error(error);
+.profile-header h2{
+margin-top:12px;
+font-size:38px;
+}
 
-    res.status(500).json({
-      error: error.message,
-    });
-  }
-};
+.profile-header p{
+color:var(--muted);
+}
+
+.section{
+padding:14px;
+border-top:1px solid #333;
+overflow-wrap:break-word;
+word-break:break-word;
+}
+
+.section-title{
+background:var(--accent);
+color:#111;
+text-align:center;
+padding:6px;
+margin-bottom:10px;
+font-weight:bold;
+font-size:28px;
+}
+
+.button{
+display:block;
+padding:8px;
+margin-bottom:8px;
+border:2px solid var(--accent);
+text-align:center;
+color:var(--text);
+}
+
+.button:hover{
+background:var(--accent);
+color:black;
+}
+
+ul{
+padding-left:22px;
+}
+
+li{
+margin-bottom:6px;
+}
+
+.spotify-card img{
+width:100%;
+border:2px solid var(--accent);
+margin-bottom:10px;
+}
+
+.artist{
+display:flex;
+align-items:center;
+gap:10px;
+margin-bottom:10px;
+}
+
+.artist img{
+width:52px;
+height:52px;
+border-radius:50%;
+object-fit:cover;
+border:2px solid var(--accent);
+}
+
+.track{
+margin-bottom:8px;
+padding-bottom:8px;
+border-bottom:1px solid #333;
+}
+
+#main{
+flex:1;
+background:#dedede;
+color:#111;
+border:3px solid var(--accent);
+overflow:hidden;
+}
+
+.top-banner{
+background:#111;
+color:white;
+padding:24px;
+text-align:center;
+border-bottom:3px solid var(--accent);
+}
+
+.top-banner h1{
+font-size:72px;
+letter-spacing:4px;
+}
+
+.tagline{
+color:var(--accent);
+font-size:30px;
+margin-top:8px;
+}
+
+.marquee{
+background:#191919;
+color:white;
+padding:10px;
+overflow:hidden;
+white-space:nowrap;
+border-bottom:2px solid var(--accent);
+}
+
+.marquee span{
+display:inline-block;
+padding-left:100%;
+animation:scroll 22s linear infinite;
+}
+
+@keyframes scroll{
+0%{transform:translateX(0);}
+100%{transform:translateX(-100%);}
+}
+
+.content{
+padding:20px;
+}
+
+.card{
+background:white;
+padding:18px;
+margin-bottom:18px;
+border:2px solid #111;
+}
+
+.card h2{
+margin-bottom:12px;
+font-size:38px;
+}
+
+.grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+gap:12px;
+}
+
+.badge{
+background:#f4f4f4;
+border:2px solid #111;
+padding:12px;
+text-align:center;
+}
+
+.badge h3{
+margin-bottom:8px;
+}
+
+footer{
+background:#111;
+color:white;
+padding:20px;
+text-align:center;
+}
+
+@media(max-width:900px){
+
+#container{
+flex-direction:column;
+}
+
+#main{
+order:1;
+width:100%;
+}
+
+#sidebar{
+order:2;
+width:100%;
+position:relative;
+top:auto;
+}
+
+.top-banner h1{
+font-size:48px;
+}
+
+.profile-pic{
+width:150px;
+height:150px;
+}
+
+.tagline{
+font-size:24px;
+}
+
+}
+
+</style>
+</head>
+
+<body>
+
+<div id="container">
+
+<div id="sidebar">
+
+<div class="profile-header">
+
+<img
+class="profile-pic"
+src="https://files.catbox.moe/131448.jpeg"
+alt="Vidur Reddy">
+
+<h2>Vidur Reddy</h2>
+
+<p>Bengaluru, India</p>
+
+<p>Business Development • Marketing • Music</p>
+
+</div>
+
+<div class="section">
+
+<div class="section-title">
+NOW PLAYING
+</div>
+
+<div id="spotify-now">
+Loading...
+</div>
+
+</div>
+
+<div class="section">
+
+<div class="section-title">
+TOP ARTISTS
+</div>
+
+<div id="spotify-artists">
+Loading...
+</div>
+
+</div>
+
+<div class="section">
+
+<div class="section-title">
+TOP TRACKS
+</div>
+
+<div id="spotify-tracks">
+Loading...
+</div>
+
+</div>
+
+<div class="section">
+
+<div class="section-title">
+LINKS
+</div>
+
+<a class="button"
+href="https://open.spotify.com/artist/7FBcuc1gsnv6Y1nwFtNRCb?si=GF2Q4gu4TbuHAhe0Ujz9jA"
+target="_blank">
+Spotify
+</a>
+
+<a class="button"
+href="https://www.linkedin.com/in/vidurmarc"
+target="_blank">
+LinkedIn
+</a>
+
+<a class="button"
+href="https://substack.com/@vidurmarc"
+target="_blank">
+Substack
+</a>
+
+<a class="button"
+href="mailto:vidur.marc@gmail.com">
+Email
+</a>
+
+</div>
+
+<div class="section">
+
+<div class="section-title">
+Education
+</div>
+
+<p>B.Com Strategic Finance</p>
+<p>St. Joseph's College of Commerce</p>
+
+</div>
+
+<div class="section">
+
+<div class="section-title">
+Achievements
+</div>
+
+<ul>
+<li>MUN Winner</li>
+<li>Multiple Olympiad Awards</li>
+<li>German A1</li>
+<li>SQL Certified</li>
+<li>Python Certified</li>
+<li>Marketing Fest Podium Finish</li>
+</ul>
+
+</div>
+
+</div>
+<div id="main">
+
+<div class="top-banner">
+
+<h1>vidursvidur</h1>
+
+<p class="tagline">
+selling experiences and curating playlists
+</p>
+
+</div>
+
+<div class="marquee">
+
+<span>
+🎵 LINKIN PARK • DEFTONES • MINT FIELD • SUNNY DAY REAL ESTATE • THE POLICE • ALICE IN CHAINS • MY CHEMICAL ROMANCE • GREEN DAY • NIRVANA 🎵
+</span>
+
+</div>
+
+<div class="content">
+
+<div class="card">
+
+<h2>About Me</h2>
+
+<p>
+I'm Vidur, a Bengaluru-based business development and marketing professional currently working with BookMyShow.
+</p>
+
+<br>
+
+<p>
+I've worked across event marketing, campaign strategy, ticketing, creative operations, growth marketing, copywriting, partner management and audience development.
+</p>
+
+<br>
+
+<p>
+My work has contributed to ₹1 crore+ in ticketing revenue and supported 30+ live events ranging from concerts and comedy shows to large-scale entertainment experiences.
+</p>
+
+<br>
+
+<p>
+I enjoy building things at the intersection of music, entertainment, culture and business. Most days you'll find me either working on live events, discovering new artists or plotting my next questionable Spotify playlist.
+</p>
+
+</div>
+
+<div class="card">
+
+<h2>Experience</h2>
+
+<div class="grid">
+
+<div class="badge">
+<h3>BookMyShow</h3>
+Business Development
+</div>
+
+<div class="badge">
+<h3>CRED</h3>
+Campaign Specialist
+</div>
+
+<div class="badge">
+<h3>MuseComm</h3>
+Copywriting Intern
+</div>
+
+<div class="badge">
+<h3>Vyass Gianetti</h3>
+Creative & Servicing
+</div>
+
+</div>
+
+</div>
+
+<div class="card">
+
+<h2>Events & Artists Worked On</h2>
+
+<p>
+Linkin Park • Calvin Harris • Def Leppard • Sunil Grover • Shaan • Anirudh • Vijay Antony • K.S. Chithra • Thaman • Ilaiyaraaja
+</p>
+
+<br>
+
+<p>
+Worked across ticketing strategy, event marketing, partner coordination, audience acquisition and campaign execution for concerts, comedy tours and large-scale live experiences.
+</p>
+
+</div>
+
+<div class="card">
+
+<h2>What I'm Into</h2>
+
+<div class="grid">
+
+<div class="badge">Live Music</div>
+<div class="badge">Concert Economics</div>
+<div class="badge">Marketing</div>
+<div class="badge">Business Development</div>
+<div class="badge">Music Discovery</div>
+<div class="badge">Festival Culture</div>
+<div class="badge">Storytelling</div>
+<div class="badge">Growth Strategy</div>
+
+</div>
+
+</div>
+
+<div class="card">
+
+<h2>Skills</h2>
+
+<div class="grid">
+
+<div class="badge">Marketing</div>
+
+<div class="badge">Business Development</div>
+
+<div class="badge">Campaign Management</div>
+
+<div class="badge">Ticketing Strategy</div>
+
+<div class="badge">Copywriting</div>
+
+<div class="badge">Partnerships</div>
+
+<div class="badge">Canva</div>
+
+<div class="badge">Python</div>
+
+<div class="badge">SQL</div>
+
+<div class="badge">Audience Growth</div>
+
+</div>
+
+</div>
+
+<footer>
+
+© 2026 VIDUR REDDY
+
+<br><br>
+
+built with caffeine, concerts and questionable sleep schedules.
+
+</footer>
+
+</div>
+
+</div>
+<script>
+
+async function loadSpotify(){
+
+try{
+
+const response = await fetch('/api/spotify');
+const data = await response.json();
+
+//
+// NOW PLAYING
+//
+
+if(data.currentlyPlaying){
+
+document.getElementById('spotify-now').innerHTML = `
+
+<div class="spotify-card">
+
+<img
+src="${data.currentlyPlaying.albumArt}"
+alt="Album Art">
+
+<div style="font-size:26px;margin-bottom:6px;">
+♫ ${data.currentlyPlaying.track}
+</div>
+
+<div style="color:#bdbdbd;">
+${data.currentlyPlaying.artist}
+</div>
+
+</div>
+
+`;
+
+}else{
+
+document.getElementById('spotify-now').innerHTML = `
+<div>
+Nothing currently playing.
+</div>
+`;
+
+}
+
+//
+// TOP ARTISTS
+//
+
+if(data.topArtists){
+
+document.getElementById('spotify-artists').innerHTML =
+
+data.topArtists.map(artist => `
+
+<div class="artist">
+
+<img
+src="${artist.image}"
+alt="${artist.name}">
+
+<div>
+${artist.name}
+</div>
+
+</div>
+
+`).join('');
+
+}
+
+//
+// TOP TRACKS
+//
+
+if(data.topTracks){
+
+document.getElementById('spotify-tracks').innerHTML =
+
+data.topTracks.map(track => `
+
+<div class="track">
+
+<div>
+♫ ${track.name}
+</div>
+
+<div style="
+font-size:18px;
+color:#bdbdbd;
+">
+${track.artist}
+</div>
+
+</div>
+
+`).join('');
+
+}
+
+}catch(error){
+
+console.error(error);
+
+document.getElementById('spotify-now').innerHTML =
+'Spotify unavailable';
+
+document.getElementById('spotify-artists').innerHTML =
+'Spotify unavailable';
+
+document.getElementById('spotify-tracks').innerHTML =
+'Spotify unavailable';
+
+}
+
+}
+
+//
+// Initial load
+//
+
+loadSpotify();
+
+//
+// Refresh every minute
+//
+
+setInterval(loadSpotify,60000);
+
+</script>
+
+</body>
+</html>
