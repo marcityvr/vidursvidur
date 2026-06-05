@@ -92,22 +92,18 @@ try {
   );
 
   if (artistsResponse.ok) {
-    const artistsData =
-      await artistsResponse.json();
+  const artistsData =
+    await artistsResponse.json();
 
-    topArtists =
-      artistsData.items?.map(
-        (artist) => ({
-          name: artist.name,
-          image:
-            artist.images?.[0]?.url,
-        })
-      ) || [];
-  }
-} catch (err) {
+  topArtists =
+    artistsData.items?.map((artist) => ({
+      name: artist.name,
+      image: artist.images?.[0]?.url,
+    })) || [];
+} else {
   console.log(
-    "Artists failed:",
-    err.message
+    "Artists Status:",
+    artistsResponse.status
   );
 }
 
@@ -124,23 +120,19 @@ try {
     }
   );
 
-  if (tracksResponse.ok) {
-    const tracksData =
-      await tracksResponse.json();
+ if (tracksResponse.ok) {
+  const tracksData =
+    await tracksResponse.json();
 
-    topTracks =
-      tracksData.items?.map(
-        (track) => ({
-          name: track.name,
-          artist:
-            track.artists?.[0]?.name,
-        })
-      ) || [];
-  }
-} catch (err) {
+  topTracks =
+    tracksData.items?.map((track) => ({
+      name: track.name,
+      artist: track.artists?.[0]?.name,
+    })) || [];
+} else {
   console.log(
-    "Tracks failed:",
-    err.message
+    "Tracks Status:",
+    tracksResponse.status
   );
 }
 
