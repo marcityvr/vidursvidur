@@ -11,7 +11,7 @@ const REFRESH_TOKEN = process.env.SPOTIFY_REFRESH_TOKEN;
 try {
 // Get Access Token
 
-```
+
 const tokenResponse = await fetch(
   "https://accounts.spotify.com/api/token",
   {
@@ -149,16 +149,15 @@ return res.status(200).json({
   topArtists,
   topTracks,
 });
-```
 
 } catch (error) {
 console.error(error);
 
-```
+
 return res.status(500).json({
   error: error.message,
 });
-```
+
 
 }
 };
