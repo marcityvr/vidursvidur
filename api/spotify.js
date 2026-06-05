@@ -105,7 +105,7 @@ module.exports = async (req, res) => {
         token
       ),
       spotifyFetch(
-        "https://api.spotify.com/v1/me/top/tracks?limit=5&time_range=medium_term",
+        "https://api.spotify.com/v1/me/top/tracks?limit=5&time_range=short_term",
         token
       ),
     ]);
