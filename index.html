@@ -237,6 +237,44 @@ a:hover{ color:white; }
 
 .badge h3{ margin-bottom:8px; }
 
+/* EXPERIENCE ENTRIES */
+.exp-entry{
+  margin-bottom:22px;
+  padding-bottom:22px;
+  border-bottom:1px solid #ddd;
+}
+.exp-entry:last-child{ border-bottom:none; margin-bottom:0; padding-bottom:0; }
+
+.exp-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:baseline;
+  flex-wrap:wrap;
+  gap:6px;
+  margin-bottom:4px;
+}
+
+.exp-role{ font-size:28px; font-weight:bold; }
+.exp-date{ font-size:18px; color:#666; }
+.exp-company{ font-size:22px; color:#444; margin-bottom:10px; }
+
+.exp-section-label{
+  font-size:18px;
+  font-weight:bold;
+  color:#111;
+  margin:10px 0 4px;
+  text-transform:uppercase;
+  letter-spacing:1px;
+}
+
+.exp-bullets{
+  padding-left:20px;
+  font-size:20px;
+  line-height:1.6;
+}
+
+.exp-bullets li{ margin-bottom:4px; }
+
 footer{
   background:#111;
   color:white;
@@ -335,28 +373,6 @@ footer{
       <a class="button" href="mailto:vidur.marc@gmail.com">Email</a>
     </div>
 
-    <!-- Education -->
-    <div class="section" id="education">
-      <div class="section-title">◈ EDUCATION</div>
-      <div style="padding:6px 0;">
-        <div style="color:var(--accent);font-size:20px;">B.Com Strategic Finance</div>
-        <div style="font-size:18px;color:var(--muted);">St. Joseph's College of Commerce</div>
-      </div>
-    </div>
-
-    <!-- Achievements -->
-    <div class="section" id="achievements">
-      <div class="section-title">★ ACHIEVEMENTS</div>
-      <ul style="padding-left:22px;font-size:20px;line-height:1.8;">
-        <li>MUN Winner</li>
-        <li>Multiple Olympiad Awards</li>
-        <li>German A1</li>
-        <li>SQL Certified</li>
-        <li>Python Certified</li>
-        <li>Marketing Fest Podium Finish</li>
-      </ul>
-    </div>
-
   </div><!-- /left-sidebar -->
 
 
@@ -379,7 +395,7 @@ footer{
       <!-- About Me -->
       <div class="card" id="about">
         <h2>♫ ABOUT ME</h2>
-        <p>I'm Vidur, a Bengaluru-based business development and marketing professional currently working with BookMyShow.</p>
+        <p>I'm Vidur, a Bengaluru-based business development and marketing professional. Most recently, I interned with BookMyShow.</p>
         <br>
         <p>I've worked across event marketing, campaign strategy, ticketing, creative operations, growth marketing, copywriting, partner management and audience development.</p>
         <br>
@@ -402,7 +418,7 @@ footer{
       <!-- Events & Artists -->
       <div class="card" id="events">
         <h2>☊ EVENTS &amp; ARTISTS</h2>
-        <p>Linkin Park • Calvin Harris • Def Leppard • Sunil Grover • Shaan • Anirudh • Vijay Antony • K.S. Chithra • Ilaiyaraaja • Oddesy of Love</p>
+        <p>Linkin Park • Calvin Harris • Def Leppard • Sunil Grover • Shaan • Anirudh • Vijay Antony • K.S. Chithra • Thaman • Ilaiyaraaja</p>
         <br>
         <p>Worked across ticketing strategy, event marketing, partner coordination, audience acquisition and campaign execution for concerts, comedy tours and large-scale live experiences.</p>
       </div>
@@ -436,6 +452,28 @@ footer{
           <div class="badge">Festival Culture</div>
           <div class="badge">Storytelling</div>
           <div class="badge">Growth Strategy</div>
+        </div>
+      </div>
+
+      <!-- Education -->
+      <div class="card" id="education">
+        <h2>◈ EDUCATION</h2>
+        <div class="badge" style="text-align:left; padding:16px;">
+          <h3>St. Joseph's College of Commerce</h3>
+          B.Com Strategic Finance
+        </div>
+      </div>
+
+      <!-- Achievements -->
+      <div class="card" id="achievements">
+        <h2>★ ACHIEVEMENTS</h2>
+        <div class="grid">
+          <div class="badge">MUN Winner</div>
+          <div class="badge">Multiple Olympiad Awards</div>
+          <div class="badge">German A1</div>
+          <div class="badge">SQL Certified</div>
+          <div class="badge">Python Certified</div>
+          <div class="badge">Marketing Fest Podium Finish</div>
         </div>
       </div>
 
