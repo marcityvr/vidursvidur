@@ -4,7 +4,8 @@ module.exports = async (req, res) => {
   const REFRESH_TOKEN = process.env.SPOTIFY_REFRESH_TOKEN;
 
   try {
-    const response = await fetch(
+    // Get Access Token
+    const tokenResponse = await fetch(
       "https://accounts.spotify.com/api/token",
       {
         method: "POST",
@@ -24,11 +25,24 @@ module.exports = async (req, res) => {
       }
     );
 
-    const data = await response.json();
+    const tokenData = await tokenResponse.json();
+    const accessToken = tokenData.access_token;
 
-    res.status(200).json(data);
+    const artistsResponse = await fetch(
+      "https://api.spotify.com/v1/me/top/artists?limit=5&time_range=medium_term",
+      {
+        headers: {
+          Authorization: "Bearer " + accessToken,
+        },
+      }
+    );
+
+    const artistsData = await artistsResponse.json();
+
+    return res.status(200).json(artistsData);
+
   } catch (error) {
-    res.status(500).json({
+    return res.status(500).json({
       error: error.message,
     });
   }
