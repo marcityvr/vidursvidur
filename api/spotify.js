@@ -20,7 +20,7 @@ const tokenResponse = await fetch(
       Authorization:
         "Basic " +
         Buffer.from(
-          `${CLIENT_ID}:${CLIENT_SECRET}`
+          CLIENT_ID + ":" + CLIENT_SECRET
         ).toString("base64"),
       "Content-Type":
         "application/x-www-form-urlencoded",
@@ -34,7 +34,8 @@ const tokenResponse = await fetch(
 
 if (!tokenResponse.ok) {
   throw new Error(
-    `Token request failed (${tokenResponse.status})`
+    "Token request failed: " +
+      tokenResponse.status
   );
 }
 
@@ -52,7 +53,8 @@ try {
     "https://api.spotify.com/v1/me/player/currently-playing",
     {
       headers: {
-        Authorization: `Bearer ${accessToken}`,
+        Authorization:
+          "Bearer " + accessToken,
       },
     }
   );
@@ -71,7 +73,7 @@ try {
   }
 } catch (err) {
   console.log(
-    "Currently Playing failed:",
+    "Current track failed:",
     err.message
   );
 }
@@ -83,7 +85,8 @@ try {
     "https://api.spotify.com/v1/me/top/artists?limit=5&time_range=medium_term",
     {
       headers: {
-        Authorization: `Bearer ${accessToken}`,
+        Authorization:
+          "Bearer " + accessToken,
       },
     }
   );
@@ -93,19 +96,17 @@ try {
       await artistsResponse.json();
 
     topArtists =
-      artistsData.items?.map((artist) => ({
-        name: artist.name,
-        image: artist.images?.[0]?.url,
-      })) || [];
-  } else {
-    console.log(
-      "Artists request failed:",
-      artistsResponse.status
-    );
+      artistsData.items?.map(
+        (artist) => ({
+          name: artist.name,
+          image:
+            artist.images?.[0]?.url,
+        })
+      ) || [];
   }
 } catch (err) {
   console.log(
-    "Artists error:",
+    "Artists failed:",
     err.message
   );
 }
@@ -117,7 +118,8 @@ try {
     "https://api.spotify.com/v1/me/top/tracks?limit=5&time_range=short_term",
     {
       headers: {
-        Authorization: `Bearer ${accessToken}`,
+        Authorization:
+          "Bearer " + accessToken,
       },
     }
   );
@@ -127,24 +129,22 @@ try {
       await tracksResponse.json();
 
     topTracks =
-      tracksData.items?.map((track) => ({
-        name: track.name,
-        artist: track.artists?.[0]?.name,
-      })) || [];
-  } else {
-    console.log(
-      "Tracks request failed:",
-      tracksResponse.status
-    );
+      tracksData.items?.map(
+        (track) => ({
+          name: track.name,
+          artist:
+            track.artists?.[0]?.name,
+        })
+      ) || [];
   }
 } catch (err) {
   console.log(
-    "Tracks error:",
+    "Tracks failed:",
     err.message
   );
 }
 
-res.status(200).json({
+return res.status(200).json({
   currentlyPlaying,
   topArtists,
   topTracks,
@@ -155,7 +155,7 @@ res.status(200).json({
 console.error(error);
 
 ```
-res.status(500).json({
+return res.status(500).json({
   error: error.message,
 });
 ```
