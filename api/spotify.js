@@ -59,8 +59,20 @@ module.exports = async (req, res) => {
       }
     );
 
-    const artistsData = await artistsResponse.json();
-
+   if (!artistsResponse.ok) {
+  return res.status(200).json({
+    currentlyPlaying: null,
+    topArtists: [],
+    topTracks: [],
+    error: `Spotify rate limited (${artistsResponse.status})`
+  });
+}
+console.log("Artists Status:", artistsResponse.status);
+console.log(
+  "Artists Body:",
+  await artistsResponse.text()
+);
+const artistsData = await artistsResponse.json();
     const topArtists = artistsData.items?.map((artist) => ({
       name: artist.name,
       image: artist.images?.[0]?.url,
