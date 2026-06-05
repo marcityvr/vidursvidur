@@ -81,66 +81,81 @@ try {
 // TOP ARTISTS (6 MONTHS)
 
 try {
-  const artistsResponse = await fetch(
-    "https://api.spotify.com/v1/me/top/artists?limit=5&time_range=medium_term",
-    {
-      headers: {
-        Authorization:
-          "Bearer " + accessToken,
-      },
-    }
-  );
+const artistsResponse = await fetch(
+"https://api.spotify.com/v1/me/top/artists?limit=5&time_range=medium_term",
+{
+headers: {
+Authorization: "Bearer " + accessToken,
+},
+}
+);
 
-  if (artistsResponse.ok) {
-  const artistsData =
-    await artistsResponse.json();
+if (artistsResponse.ok) {
+const artistsData = await artistsResponse.json();
 
-  topArtists =
-    artistsData.items?.map((artist) => ({
-      name: artist.name,
-      image: artist.images?.[0]?.url,
-    })) || [];
+```
+topArtists =
+  artistsData.items?.map((artist) => ({
+    name: artist.name,
+    image: artist.images?.[0]?.url,
+  })) || [];
+```
+
 } else {
-  console.log(
-    "Artists Status:",
-    artistsResponse.status
-  );
+console.log(
+"Artists Status:",
+artistsResponse.status
+);
+}
+} catch (err) {
+console.log(
+"Artists failed:",
+err.message
+);
 }
 
 // TOP TRACKS (4 WEEKS)
 
 try {
-  const tracksResponse = await fetch(
-    "https://api.spotify.com/v1/me/top/tracks?limit=5&time_range=short_term",
-    {
-      headers: {
-        Authorization:
-          "Bearer " + accessToken,
-      },
-    }
-  );
+const tracksResponse = await fetch(
+"https://api.spotify.com/v1/me/top/tracks?limit=5&time_range=short_term",
+{
+headers: {
+Authorization: "Bearer " + accessToken,
+},
+}
+);
 
- if (tracksResponse.ok) {
-  const tracksData =
-    await tracksResponse.json();
+if (tracksResponse.ok) {
+const tracksData = await tracksResponse.json();
 
-  topTracks =
-    tracksData.items?.map((track) => ({
-      name: track.name,
-      artist: track.artists?.[0]?.name,
-    })) || [];
+```
+topTracks =
+  tracksData.items?.map((track) => ({
+    name: track.name,
+    artist: track.artists?.[0]?.name,
+  })) || [];
+```
+
 } else {
-  console.log(
-    "Tracks Status:",
-    tracksResponse.status
-  );
+console.log(
+"Tracks Status:",
+tracksResponse.status
+);
+}
+} catch (err) {
+console.log(
+"Tracks failed:",
+err.message
+);
 }
 
 return res.status(200).json({
-  currentlyPlaying,
-  topArtists,
-  topTracks,
+currentlyPlaying,
+topArtists,
+topTracks,
 });
+
 
 } catch (error) {
 console.error(error);
